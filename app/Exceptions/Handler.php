@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +28,29 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e): JsonResponse
+    {
+        if(!self::isReportable($e))
+            throw new DefaultException();
+
+        return response()->json([
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+        ], $e->getCode());
+    }
+
+    public static function isReportable(Throwable $throwable): bool
+    {
+        $reportable = config('exception.reportable');
+
+        foreach ($reportable as $exception) {
+            if ($throwable instanceof $exception) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
