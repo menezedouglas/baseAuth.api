@@ -26,8 +26,10 @@ class Authenticate
         }
 
         foreach ($guards as $guard) {
-            if (!Auth::guard($guard)->check())
+            if (!Auth::guard($guard)->check()) {
+                Auth::logout();
                 throw new UnauthenticatedException();
+            }
         }
 
         return $next($request);

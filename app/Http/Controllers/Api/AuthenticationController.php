@@ -6,6 +6,7 @@ use App\Exceptions\Auth\WrongCredentialsException;
 use App\Http\Controllers\Controller;
 
 use App\Http\Resources\DefaultResource;
+use App\Http\Resources\SuccessResource;
 use App\Services\AuthenticationService;
 use Illuminate\Http\Request;
 
@@ -34,11 +35,11 @@ class AuthenticationController extends Controller
         );
     }
 
-    public function logout(): DefaultResource
+    public function logout(): SuccessResource
     {
         $this->authenticationService->logout();
 
-        return new DefaultResource([]);
+        return new SuccessResource([]);
     }
 
 }

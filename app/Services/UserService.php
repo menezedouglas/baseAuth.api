@@ -19,7 +19,8 @@ class UserService implements Service
 
     public function all(): Collection|array
     {
-        return self::query()->get();
+        return self::query()
+            ->get();
     }
 
     /**
