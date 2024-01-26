@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\Auth\WrongCredentialsException;
 use App\Http\Controllers\Controller;
 
+use App\Http\Resources\DefaultResource;
 use App\Services\AuthenticationService;
 use Illuminate\Http\Request;
 
@@ -20,15 +21,24 @@ class AuthenticationController extends Controller
 
     /**
      * @param Request $request
-     * @return array
+     * @return DefaultResource
      * @throws WrongCredentialsException
      */
-    public function index(Request $request): array
+    public function index(Request $request): DefaultResource
     {
-        return $this->authenticationService->login(
-            $request->input('email'),
-            $request->input('password')
+        return new DefaultResource(
+            $this->authenticationService->login(
+                $request->input('email'),
+                $request->input('password')
+            )
         );
+    }
+
+    public function logout(): DefaultResource
+    {
+        $this->authenticationService->logout();
+
+        return new DefaultResource([]);
     }
 
 }

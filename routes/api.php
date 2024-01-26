@@ -20,4 +20,8 @@ Route::controller(AuthenticationController::class)->prefix('auth')->group(functi
 
     Route::post('login', 'index')->name('login');
 
+    Route::delete('logout', 'logout')
+        ->middleware('auth:api')
+        ->name('logout');
+
 });

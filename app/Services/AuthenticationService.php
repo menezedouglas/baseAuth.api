@@ -49,4 +49,9 @@ class AuthenticationService implements Service
         ];
     }
 
+    public function logout(): void
+    {
+        Auth::logout();
+    }
+
 }
